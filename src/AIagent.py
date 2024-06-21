@@ -8,10 +8,12 @@ class AIagent:
     def get_name(self):
         return self.model
 
-    def generate_response(self, input: str) -> str:
+    def generate_response(self, input: str, include = False) -> str:
         # Prepares the prompt with the memory of the conversation
         prompt = ""
-        self.history.append({"role": "user", "content": input})
+        if include:
+            self.history.append({"role": "user", "content": input})
+            
         for message in self.history:
             prompt += f"{message['role']}: {message['content']}\n"
 
@@ -19,7 +21,8 @@ class AIagent:
         response = ollama.generate(self.model, prompt)
 
         # Updates the memory of the conversation with the new response
-        self.history.append({"role": "model", "content": response})
+        if include:
+            self.history.append({"role": "model", "content": response})
         
         return response['response']
     
