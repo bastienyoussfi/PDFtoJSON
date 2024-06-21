@@ -2,6 +2,7 @@ from src.AIagent import AIagent
 from src.PDFHandler import PDFHandler
 
 categories = ["about", "work experience", "education", "languages", "skills", "interests"]
+PATH = "res/"
 
 class PDFClassifier:
     def __init__(self, f):
@@ -16,10 +17,9 @@ class PDFClassifier:
         self.aiagent.generate_response(prompt_category, False)
         return self.aiagent.generate_response(text)
     
-    def classify_all(self) -> str:
-        text = self.pdfhandler.remove_hyphens()
-
+    def classify_all(self) -> None:
         for category in categories:
             cattxt = self.classify(category)
-            with open(category + ".txt", "w") as f:
+            with open(PATH + category + ".txt", "w") as f:
                 f.write(cattxt)
+            print(f"{category} classified successfully.\n")
